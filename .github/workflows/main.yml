@@ -1,0 +1,43 @@
+name: Web3 Build & Compile
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 🧩 Step 1: Checkout your repo
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 🟢 Step 2: Setup Node.js for Next.js frontend
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      # 🧱 Step 3: Install dependencies and build frontend
+      - name: Install dependencies
+        working-directory: luxury-auth-frontend
+        run: npm install
+
+      - name: Build Next.js app
+        working-directory: luxury-auth-frontend
+        run: npm run build
+
+      # ⚒ Step 4: (Optional) Compile smart contracts using Foundry
+      - name: Install Foundry
+        run: curl -L https://foundry.paradigm.xyz | bash && source ~/.bashrc && foundryup
+
+      - name: Compile smart contracts
+        working-directory: luxury-auth-frontend
+        run: forge build
+
+      # ✅ Step 5: Confirm successful build
+      - name: Success message
+        run: echo "✅ Next.js build and contract compile successful!"
