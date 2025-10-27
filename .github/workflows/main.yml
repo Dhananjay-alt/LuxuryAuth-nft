@@ -30,14 +30,16 @@ jobs:
         working-directory: luxury-auth-frontend
         run: npm run build
 
-      # ⚒ Step 4: (Optional) Compile smart contracts using Foundry
+      # ⚒ Step 4: Compile smart contracts using Foundry
       - name: Install Foundry
-        run: curl -L https://foundry.paradigm.xyz | bash && source ~/.bashrc && foundryup
+        run: |
+          curl -L https://foundry.paradigm.xyz | bash
+          ~/.foundry/bin/foundryup
 
       - name: Compile smart contracts
-        working-directory: luxury-auth-frontend
+        working-directory: foundry-f23/lux-auth-nft
         run: forge build
 
       # ✅ Step 5: Confirm successful build
       - name: Success message
-        run: echo "✅ Next.js build and contract compile successful!"
+        run: echo "✅ Next.js build and contract compile successful!"
